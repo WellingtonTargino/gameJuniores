@@ -1,188 +1,1143 @@
+
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Quiz com Temporizador</title>
-<style>
-    body {
-        font-family: Arial, sans-serif;
-        background: linear-gradient(to right, #0b1442, #1b39c5);
-        margin: 0;
-        padding: 0;
-    }
-    .container {
-        max-width: 80%;
-        margin: 50px auto;
-        padding: 20px;
-        background-color: #fff;
-        border-radius: 10px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    }
-    h1 {
-        text-align: center;
-        color: #333;
-    }
-    .question {
-        text-align: center;
-        font-size: 24px;
-        margin-bottom: 20px;
-        color: #333;
-    }
-    .options {
-        display: flex;
-        justify-content: center;
-        flex-wrap: wrap;
-        margin-bottom: 20px;
-    }
-    .option {
-        margin: 0 10px 10px 0;
-        padding: 10px 20px;
-        font-size: 16px;
-        background-color: #4caf50;
-        color: #fff;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        transition: background-color 0.3s;
-    }
-    .option:hover {
-        background-color: #45a049;
-    }
-    #timer {
-        font-size: 18px;
-        margin-top: 20px;
-        text-align: center;
-        color: #333;
-    }
-    #countdown {
-        color: #ff0000;
-    }
+<title>Adole Lanche | Faça seu pedido</title>
 
-    @media screen and (max-width: 600px) {
-        .container {
-            max-width: 90%;
-        }
-    }
+<style>
+:root {
+  --purple: #29243f;
+  --purple-light: #40375e;
+  --yellow: #ffbd50;
+  --yellow-light: #fff2d9;
+  --bg: #f7f6fa;
+  --white: #ffffff;
+  --text: #292638;
+  --muted: #827f8e;
+  --border: #eae7ef;
+  --green: #20a45b;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+
+button, select {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+/* CABEÇALHO */
+
+header {
+  background: var(--purple);
+  color: white;
+  padding: 1rem 5%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  box-shadow: 0 3px 15px #00000018;
+}
+
+.logo {
+  font-size: 1.35rem;
+  font-weight: 900;
+  letter-spacing: -0.5px;
+}
+
+.logo span {
+  color: var(--yellow);
+}
+
+.cart-button {
+  background: var(--yellow);
+  color: var(--purple);
+  border: none;
+  border-radius: 2rem;
+  padding: 0.75rem 1rem;
+  font-weight: bold;
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.cart-count {
+  background: var(--purple);
+  color: white;
+  padding: 0.15rem 0.45rem;
+  border-radius: 50%;
+  font-size: 0.8rem;
+}
+
+/* APRESENTAÇÃO */
+
+main {
+  width: 92%;
+  max-width: 1100px;
+  margin: 2rem auto;
+}
+
+.hero {
+  background: var(--purple);
+  color: white;
+  border-radius: 1.3rem;
+  padding: clamp(1.5rem, 5vw, 2.5rem);
+  margin-bottom: 2rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero h1 {
+  font-size: clamp(1.8rem, 5vw, 2.6rem);
+  margin-bottom: 0.7rem;
+}
+
+.hero h1 span {
+  color: var(--yellow);
+}
+
+.hero p {
+  color: #e3dfef;
+  line-height: 1.6;
+  max-width: 450px;
+}
+
+.hero-label {
+  display: inline-block;
+  margin-top: 1.2rem;
+  padding: 0.55rem 0.9rem;
+  border-radius: 2rem;
+  background: var(--yellow);
+  color: var(--purple);
+  font-weight: bold;
+  font-size: 0.85rem;
+}
+
+/* CATÁLOGO */
+
+.section-heading {
+  margin-bottom: 1.2rem;
+}
+
+.section-heading h2 {
+  font-size: 1.5rem;
+  margin-bottom: 0.4rem;
+}
+
+.section-heading p {
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.products {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
+  gap: 1.2rem;
+}
+
+.product {
+  background: white;
+  border-radius: 1rem;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  transition: 0.2s;
+  cursor: pointer;
+}
+
+.product:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 25px #29243f12;
+}
+
+.product img {
+  display: block;
+  width: 100%;
+  height: 190px;
+  object-fit: cover;
+  background: #eee;
+}
+
+.product-info {
+  padding: 1rem;
+}
+
+.product-info h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.4rem;
+}
+
+.product-info p {
+  color: var(--muted);
+  font-size: 0.85rem;
+  margin-bottom: 0.9rem;
+}
+
+.product-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.price {
+  color: var(--purple);
+  font-weight: 900;
+  font-size: 1.1rem;
+}
+
+.add-icon {
+  background: var(--yellow);
+  color: var(--purple);
+  width: 2.3rem;
+  height: 2.3rem;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  font-size: 1.4rem;
+  font-weight: bold;
+}
+
+/* MODAIS */
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: #171425a8;
+  z-index: 30;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.overlay.active {
+  display: flex;
+}
+
+.modal {
+  background: white;
+  width: 100%;
+  max-width: 440px;
+  max-height: 90vh;
+  overflow-y: auto;
+  padding: 1.4rem;
+  border-radius: 1.2rem;
+  animation: appear 0.2s ease;
+}
+
+@keyframes appear {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.3rem;
+}
+
+.modal-header h2 {
+  font-size: 1.3rem;
+}
+
+.close {
+  background: #f0eef4;
+  border: none;
+  width: 2.2rem;
+  height: 2.2rem;
+  border-radius: 50%;
+  font-size: 1.4rem;
+  color: var(--purple);
+}
+
+.field {
+  margin-bottom: 1.2rem;
+}
+
+.field label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 0.6rem;
+}
+
+select {
+  width: 100%;
+  padding: 0.85rem;
+  border: 1px solid var(--border);
+  border-radius: 0.7rem;
+  background: white;
+  color: var(--text);
+}
+
+.quantity {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.quantity button {
+  border: none;
+  width: 2.5rem;
+  height: 2.5rem;
+  background: var(--yellow-light);
+  color: var(--purple);
+  border-radius: 0.6rem;
+  font-size: 1.3rem;
+  font-weight: bold;
+}
+
+.quantity span {
+  font-weight: bold;
+  min-width: 1.5rem;
+  text-align: center;
+}
+
+.primary-button {
+  width: 100%;
+  padding: 0.95rem;
+  border: none;
+  border-radius: 0.7rem;
+  background: var(--purple);
+  color: white;
+  font-weight: bold;
+  font-size: 1rem;
+}
+
+.primary-button:hover {
+  background: var(--purple-light);
+}
+
+/* CARRINHO */
+
+.cart-modal {
+  max-width: 540px;
+}
+
+.cart-item {
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.cart-item h4 {
+  margin-bottom: 0.3rem;
+}
+
+.cart-item p {
+  color: var(--muted);
+  font-size: 0.85rem;
+  margin-bottom: 0.7rem;
+}
+
+.cart-item-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.cart-item-total {
+  font-weight: bold;
+  color: var(--purple);
+}
+
+.cart-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  flex-wrap: wrap;
+}
+
+.cart-actions button {
+  border: none;
+  padding: 0.45rem 0.7rem;
+  border-radius: 0.5rem;
+  background: #f0eef4;
+  color: var(--purple);
+}
+
+.cart-actions .remove {
+  background: #ffeded;
+  color: #b52e37;
+}
+
+.cart-flavor {
+  margin: 0.65rem 0;
+}
+
+.cart-flavor label {
+  font-size: 0.8rem;
+  color: var(--muted);
+  display: block;
+  margin-bottom: 0.3rem;
+}
+
+.cart-flavor select {
+  padding: 0.55rem;
+  font-size: 0.9rem;
+}
+
+.cart-total {
+  display: flex;
+  justify-content: space-between;
+  padding: 1.3rem 0;
+  font-weight: 900;
+  font-size: 1.25rem;
+}
+
+.empty {
+  text-align: center;
+  padding: 2rem 0;
+  color: var(--muted);
+}
+
+.empty-icon {
+  font-size: 3rem;
+  margin-bottom: 0.7rem;
+}
+
+.whatsapp {
+  background: var(--green);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+}
+
+.whatsapp:hover {
+  background: #168449;
+}
+
+footer {
+  background: var(--purple);
+  color: white;
+  text-align: center;
+  padding: 2rem 1rem;
+  margin-top: 3rem;
+}
+
+footer strong {
+  color: var(--yellow);
+}
+
+@media(max-width: 480px) {
+  header {
+    padding: 0.9rem 4%;
+  }
+
+  .logo {
+    font-size: 1.15rem;
+  }
+
+  main {
+    margin-top: 1.3rem;
+  }
+
+  .product img {
+    height: 155px;
+  }
+
+  .products {
+    gap: 0.8rem;
+  }
+}
 </style>
 </head>
+
 <body>
 
-<div class="container">
-    <h1>Bora Brincar!</h1>
-    <div class="question" id="question"></div>
-    <div class="options" id="options"></div>
-    <div id="timer">Tempo restante: <span id="countdown"></span></div>
+<!-- CABEÇALHO -->
+
+<header>
+  <div class="logo">
+    ADOLE <span>LANCHE.</span>
+  </div>
+
+  <button class="cart-button" onclick="openCart()">
+    🛒 Carrinho
+    <span class="cart-count" id="cartCount">0</span>
+  </button>
+</header>
+
+
+<main>
+
+  <!-- PRODUTOS -->
+
+  <section>
+    <div class="section-heading">
+      <h2>Nosso cardápio 🍴</h2>
+      <p>Escolha um produto para conferir os sabores.</p>
+    </div>
+
+    <div class="products" id="products"></div>
+  </section>
+
+</main>
+
+
+<!-- RODAPÉ -->
+
+<footer>
+  <strong>ADOLE LANCHE.</strong>
+  <p style="margin-top:0.6rem">
+    Sabor que combina com você! 💛
+  </p>
+</footer>
+
+
+<!-- MODAL DO PRODUTO -->
+
+<div class="overlay" id="productOverlay"
+     onclick="closeOutside(event, 'productOverlay')">
+
+  <div class="modal">
+
+    <div class="modal-header">
+      <h2 id="modalTitle">Produto</h2>
+      <button class="close" onclick="closeProduct()">×</button>
+    </div>
+
+    <div class="field">
+      <label for="flavor">Escolha o sabor:</label>
+      <select id="flavor"></select>
+    </div>
+
+    <div class="field">
+      <label>Quantidade:</label>
+
+      <div class="quantity">
+        <button onclick="changeProductQty(-1)">−</button>
+        <span id="productQty">1</span>
+        <button onclick="changeProductQty(1)">+</button>
+      </div>
+    </div>
+
+    <p style="margin-bottom:1.2rem">
+      Valor unitário:
+      <strong id="productPrice"></strong>
+    </p>
+
+    <button class="primary-button" onclick="addToCart()">
+      Adicionar ao carrinho +
+    </button>
+
+  </div>
 </div>
 
+
+<!-- MODAL DO CARRINHO -->
+
+<div class="overlay" id="cartOverlay"
+     onclick="closeOutside(event, 'cartOverlay')">
+
+  <div class="modal cart-modal">
+
+    <div class="modal-header">
+      <h2>🛒 Meu carrinho</h2>
+      <button class="close" onclick="closeCart()">×</button>
+    </div>
+
+    <div id="cartItems"></div>
+
+    <div id="cartFooter" style="display:none">
+
+      <div class="cart-total">
+        <span>Total:</span>
+        <span id="cartTotal">R$ 0,00</span>
+      </div>
+
+      <button class="primary-button whatsapp"
+              onclick="sendWhatsApp()">
+        <span>📱</span> Solicitar pelo WhatsApp
+      </button>
+
+    </div>
+
+  </div>
+</div>
+
+
 <script>
-    const questions = [
-        {
-            question: "O que significa a palavra Evangelho?",
-            options: ["Carta", "Boa Noticia", "Livro", "Mateus"],
-            answer: "Boa Noticia"
-        },
-        {
-            question: "Quantos Evangelhos temos na Biblia?",
-            options: ["4", "2", "66", "Apenas 1"],
-            answer: "4"
-        },
-        {
-            question: "Qual discipulo quis mostrar Jesus como o Messias esperado?",
-            options: ["Mateus", "Marcos", "Lucas", "João"],
-            answer: "Mateus"
-        },
-        {
-            question: "Qual discipulo quis mostrar Jesus como o Homem perfeito?",
-            options: ["Mateus", "Marcos", "Lucas", "João"],
-            answer: "Lucas"
-        },
-        {
-            question: "Qual discipulo quis mostrar Jesus como servo?",
-            options: ["Mateus", "Marcos", "Lucas", "João"],
-            answer: "Marcos"
-        },
-        {
-            question: "Qual discipulo quis mostrar Jesus como o filho de Deus?",
-            options: ["Mateus", "Marcos", "Lucas", "João"],
-            answer: "João"
-        },
-        {
-            question: "Qual dos 4 escritores era mas proximo de Jesus?",
-            options: ["Mateus", "Marcos", "Lucas", "João"],
-            answer: "João"
-        },
-        {
-            question: "Qual dos 4 escritores escreveu a familia de Jesus desde Adão?",
-            options: ["Mateus", "Marcos", "Lucas", "João"],
-            answer: "Lucas"
-        }
-    ];
 
-    let currentQuestion = 0;
-    let score = 0;
-    let chances = 3;
-    let countdown;
+// ========================================
+// 1. CONFIGURAÇÕES DA LOJA
+// ========================================
 
-    function startTimer(seconds) {
-        let timer = seconds;
-        countdown = setInterval(function() {
-            timer--;
-            document.getElementById("countdown").innerText = timer + "s";
-            if (timer === 0) {
-                clearInterval(countdown);
-                displayNextQuestion();
-            }
-        }, 1000);
-    }
+// Substitua pelo seu número.
+// Formato: 55 + DDD + número.
+// Exemplo: 5583999999999
 
-    function displayQuestion() {
-        document.getElementById("question").innerText = questions[currentQuestion].question;
-        const optionsContainer = document.getElementById("options");
-        optionsContainer.innerHTML = "";
-        questions[currentQuestion].options.forEach(option => {
-            const button = document.createElement("button");
-            button.textContent = option;
-            button.classList.add("option");
-            button.onclick = function() {
-                checkAnswer(option);
-            };
-            optionsContainer.appendChild(button);
-        });
-        startTimer(60); // Defina a duração do temporizador em segundos
-    }
+const WHATSAPP = "5583991850401";
 
-    function displayNextQuestion() {
-        currentQuestion++;
-        if (currentQuestion < questions.length) {
-            displayQuestion();
-        } else {
-            endQuiz();
-        }
-    }
 
-    function checkAnswer(selectedOption) {
-        clearInterval(countdown);
-        if (selectedOption === questions[currentQuestion].answer) {
-            score++;
-            displayNextQuestion();
-        } else {
-            chances--;
-            if (chances === 0) {
-                endQuiz();
-            } else {
-                alert("Resposta incorreta! Você tem mais " + chances + " tentativas.");
-                displayNextQuestion();
-            }
-        }
-    }
+// ========================================
+// 2. CADASTRO DOS PRODUTOS
+// ========================================
 
-    function endQuiz() {
-        alert("Quiz concluído! Sua pontuação é: " + score);
-        // Você pode adicionar mais ações aqui, como reiniciar o quiz.
-    }
+// Personalize preços, fotos e sabores.
+// Os valores são exemplos.
 
-    displayQuestion();
+const products = [
+
+  {
+    id: 1,
+    name: "Coxinha",
+    description: "Deliciosa e crocante!",
+    price: 6.00,
+
+    image:
+      "https://www.adoro.com.br/wp-content/uploads/2025/07/blog__0001_texto-15-Mini-Coxinhas-de-Frango-Adoro-para-Festa.jpg",
+
+    flavors: [
+      "Frango",
+      "Frango com Catupiry",
+      "Carne"
+    ]
+  },
+
+  {
+    id: 2,
+    name: "Empada",
+    description: "Massa leve e saborosa!",
+    price: 7.00,
+
+    image:
+      "https://files.ndeal.app/api/images/producao.spayce.com.br/1776102506018_2024_12_06_edicaseempada_de_camarao_imagem_flanovais_shutterstock_t5nz620s.jpg?",
+
+    flavors: [
+      "Frango",
+      "Frango com Catupiry",
+      "Palmito",
+      "Queijo"
+    ]
+  },
+
+  {
+    id: 3,
+    name: "Bolo de pote",
+    description: "Uma delícia em cada colherada!",
+    price: 10.00,
+
+    image:
+      "https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=700",
+
+    flavors: [
+      "Chocolate",
+      "Ninho",
+      "Ninho com Nutella",
+      "Morango",
+      "Prestígio"
+    ]
+  }
+
+];
+
+
+// ========================================
+// 3. VARIÁVEIS
+// ========================================
+
+let selectedProduct = null;
+let productQuantity = 1;
+
+let cart = [];
+
+try {
+  const saved = JSON.parse(
+    localStorage.getItem("adoleLancheCarrinho")
+  );
+
+  if (Array.isArray(saved)) {
+    cart = saved.filter(item =>
+      products.some(p => p.id === item.productId) &&
+      typeof item.quantity === "number" &&
+      item.quantity > 0 &&
+      Number.isFinite(item.quantity) &&
+      typeof item.flavor === "string" &&
+      Number.isFinite(item.price) &&
+      item.price >= 0
+    );
+  }
+
+} catch (error) {
+  cart = [];
+}
+
+
+// ========================================
+// 4. FORMATAÇÃO DE VALORES
+// ========================================
+
+function money(value) {
+
+  return value.toLocaleString("pt-BR", {
+    style: "currency",
+    currency: "BRL"
+  });
+
+}
+
+
+// ========================================
+// 5. MOSTRAR PRODUTOS
+// ========================================
+
+function renderProducts() {
+
+  const container =
+    document.getElementById("products");
+
+  container.innerHTML = products.map(product => `
+
+    <article class="product"
+      onclick="openProduct(${product.id})">
+
+      <img
+        src="${product.image}"
+        alt="${product.name}"
+        loading="lazy">
+
+      <div class="product-info">
+
+        <h3>${product.name}</h3>
+
+        <p>${product.description}</p>
+
+        <div class="product-bottom">
+
+          <span class="price">
+            ${money(product.price)}
+          </span>
+
+          <span class="add-icon">+</span>
+
+        </div>
+
+      </div>
+
+    </article>
+
+  `).join("");
+
+}
+
+
+// ========================================
+// 6. ABRIR PRODUTO
+// ========================================
+
+function openProduct(id) {
+
+  selectedProduct =
+    products.find(product => product.id === id);
+
+  productQuantity = 1;
+
+  document.getElementById("modalTitle").textContent =
+    selectedProduct.name;
+
+  document.getElementById("productPrice").textContent =
+    money(selectedProduct.price);
+
+  document.getElementById("productQty").textContent = 1;
+
+  document.getElementById("flavor").innerHTML =
+    selectedProduct.flavors.map(flavor => `
+      <option value="${flavor}">${flavor}</option>
+    `).join("");
+
+  document.getElementById("productOverlay")
+    .classList.add("active");
+
+}
+
+
+function closeProduct() {
+
+  document.getElementById("productOverlay")
+    .classList.remove("active");
+
+}
+
+
+// ========================================
+// 7. QUANTIDADE DO PRODUTO
+// ========================================
+
+function changeProductQty(value) {
+
+  productQuantity += value;
+
+  if (productQuantity < 1) {
+    productQuantity = 1;
+  }
+
+  document.getElementById("productQty")
+    .textContent = productQuantity;
+
+}
+
+
+// ========================================
+// 8. ADICIONAR AO CARRINHO
+// ========================================
+
+function addToCart() {
+
+  const flavor =
+    document.getElementById("flavor").value;
+
+  const existing = cart.find(item =>
+    item.productId === selectedProduct.id &&
+    item.flavor === flavor
+  );
+
+  if (existing) {
+
+    existing.quantity += productQuantity;
+
+  } else {
+
+    cart.push({
+
+      productId: selectedProduct.id,
+      name: selectedProduct.name,
+      flavor: flavor,
+      price: selectedProduct.price,
+      quantity: productQuantity
+
+    });
+
+  }
+
+  saveCart();
+  closeProduct();
+
+}
+
+
+// ========================================
+// 9. SALVAR CARRINHO
+// ========================================
+
+function saveCart() {
+
+  localStorage.setItem(
+    "adoleLancheCarrinho",
+    JSON.stringify(cart)
+  );
+
+  updateCartCount();
+  renderCart();
+
+}
+
+
+// ========================================
+// 10. CONTADOR
+// ========================================
+
+function updateCartCount() {
+
+  const total = cart.reduce((sum, item) =>
+    sum + item.quantity, 0
+  );
+
+  document.getElementById("cartCount")
+    .textContent = total;
+
+}
+
+
+// ========================================
+// 11. ABRIR E FECHAR CARRINHO
+// ========================================
+
+function openCart() {
+
+  renderCart();
+
+  document.getElementById("cartOverlay")
+    .classList.add("active");
+
+}
+
+
+function closeCart() {
+
+  document.getElementById("cartOverlay")
+    .classList.remove("active");
+
+}
+
+
+// ========================================
+// 12. FECHAR AO CLICAR FORA DA JANELA
+// ========================================
+
+function closeOutside(event, id) {
+
+  if (event.target.id === id) {
+    document.getElementById(id)
+      .classList.remove("active");
+  }
+
+}
+
+
+// ========================================
+// 13. MOSTRAR CARRINHO
+// ========================================
+
+function renderCart() {
+
+  const container =
+    document.getElementById("cartItems");
+
+  const footer =
+    document.getElementById("cartFooter");
+
+  if (cart.length === 0) {
+
+    container.innerHTML = `
+      <div class="empty">
+        <div class="empty-icon">🛒</div>
+        <p>Seu carrinho está vazio.</p>
+        <p style="margin-top:0.5rem">
+          Escolha algo delicioso no nosso cardápio!
+        </p>
+      </div>
+    `;
+
+    footer.style.display = "none";
+    return;
+
+  }
+
+  footer.style.display = "block";
+
+  container.innerHTML = cart.map((item, index) => {
+
+    const product =
+      products.find(p => p.id === item.productId);
+
+    return `
+
+      <div class="cart-item">
+
+        <div class="cart-item-top">
+
+          <div>
+            <h4>${item.name}</h4>
+
+            <p>
+              ${money(item.price)} por unidade
+            </p>
+          </div>
+
+          <span class="cart-item-total">
+            ${money(item.price * item.quantity)}
+          </span>
+
+        </div>
+
+        <div class="cart-flavor">
+
+          <label>Alterar sabor:</label>
+
+          <select
+            onchange="changeFlavor(${index}, this.value)">
+
+            ${product.flavors.map(flavor => `
+              <option
+                value="${flavor}"
+                ${flavor === item.flavor ? "selected" : ""}>
+                ${flavor}
+              </option>
+            `).join("")}
+
+          </select>
+
+        </div>
+
+        <div class="cart-actions">
+
+          <button onclick="changeCartQty(${index}, -1)">
+            −
+          </button>
+
+          <strong>${item.quantity}</strong>
+
+          <button onclick="changeCartQty(${index}, 1)">
+            +
+          </button>
+
+          <button class="remove"
+            onclick="removeItem(${index})">
+            Remover
+          </button>
+
+        </div>
+
+      </div>
+
+    `;
+
+  }).join("");
+
+
+  const total = cart.reduce((sum, item) =>
+    sum + item.price * item.quantity, 0
+  );
+
+  document.getElementById("cartTotal")
+    .textContent = money(total);
+
+}
+
+
+// ========================================
+// 14. ALTERAR QUANTIDADE
+// ========================================
+
+function changeCartQty(index, value) {
+
+  cart[index].quantity += value;
+
+  if (cart[index].quantity <= 0) {
+    cart.splice(index, 1);
+  }
+
+  saveCart();
+
+}
+
+
+// ========================================
+// 15. ALTERAR SABOR
+// ========================================
+
+function changeFlavor(index, newFlavor) {
+
+  const item = cart[index];
+
+  const existing = cart.find((other, i) =>
+    i !== index &&
+    other.productId === item.productId &&
+    other.flavor === newFlavor
+  );
+
+  if (existing) {
+
+    existing.quantity += item.quantity;
+    cart.splice(index, 1);
+
+  } else {
+
+    item.flavor = newFlavor;
+
+  }
+
+  saveCart();
+
+}
+
+
+// ========================================
+// 16. REMOVER ITEM
+// ========================================
+
+function removeItem(index) {
+
+  cart.splice(index, 1);
+
+  saveCart();
+
+}
+
+
+// ========================================
+// 17. SOLICITAR PELO WHATSAPP
+// ========================================
+
+function sendWhatsApp() {
+
+  if (cart.length === 0) {
+    alert("Seu carrinho está vazio!");
+    return;
+  }
+
+  if (!/^55\d{10,11}$/.test(WHATSAPP)) {
+    alert("Configure corretamente o número do WhatsApp no código.");
+    return;
+  }
+
+  const total = cart.reduce((sum, item) =>
+    sum + item.price * item.quantity, 0
+  );
+
+  let message =
+    "Olá! Tudo bem? Gostaria de fazer um pedido na Adole Lanche! 😋\n\n";
+
+  message += "*MEU PEDIDO:*\n\n";
+
+  cart.forEach(item => {
+
+    message +=
+      `🍴 ${item.name}\n` +
+      `• Sabor: ${item.flavor}\n` +
+      `• Quantidade: ${item.quantity}\n` +
+      `• Subtotal: ${money(item.price * item.quantity)}\n\n`;
+
+  });
+
+  message +=
+    "--------------------------\n" +
+    `*TOTAL: ${money(total)}*\n\n` +
+    "Aguardo a confirmação do pedido!\n" +
+    "Obrigado! ❤️";
+
+  const url =
+    "https://wa.me/" +
+    WHATSAPP +
+    "?text=" +
+    encodeURIComponent(message);
+
+  window.open(url, "_blank");
+
+}
+
+
+// ========================================
+// 18. INICIALIZAÇÃO
+// ========================================
+
+renderProducts();
+updateCartCount();
+renderCart();
+
 </script>
 
 </body>
